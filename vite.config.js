@@ -5,7 +5,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 export default defineConfig({
-  base: '/', // ✅ base reste utile
+  base: '/',
   plugins: [
     vue(),
     vueDevTools(),
@@ -13,7 +13,7 @@ export default defineConfig({
       targets: [
         {
           src: 'public/_redirects',
-          dest: '.' // copié à la racine de dist/
+          dest: '.' // vers dist/
         }
       ]
     })
