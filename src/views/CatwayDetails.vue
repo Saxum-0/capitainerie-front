@@ -1,5 +1,5 @@
 <template>
-  <div class="catway-details">
+  <div class="catway-details" v-if="catway && catway._id">
     <h1>Détails du catway</h1>
 
     <p v-if="loading">Chargement...</p>
