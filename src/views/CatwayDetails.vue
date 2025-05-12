@@ -1,5 +1,6 @@
 <template>
   <div class="catway-details" v-if="catway && catway._id">
+
     <h1>Détails du catway</h1>
 
     <p v-if="loading">Chargement...</p>
@@ -12,6 +13,8 @@
       <p><strong>État :</strong> {{ catway.catwayState }}</p>
     </div>
   </div>
+  <p v-else>Le catway est introuvable ou en cours de chargement.</p>
+
 </template>
 
 <script setup>
