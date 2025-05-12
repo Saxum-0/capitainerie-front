@@ -1,9 +1,13 @@
 <template>
   <div class="catways">
     <h1>Liste des catways</h1>
-    <ul>
+
+    <div v-if="loading">Chargement en cours...</div>
+    <div v-else-if="error" class="error">{{ error }}</div>
+    
+    <ul v-else>
       <li v-for="catway in catways" :key="catway._id">
-        <strong>ID :</strong> {{ catway._id }}<br />
+        <strong>ID :</strong> {{ catway._id }} -
         <strong>Numéro :</strong> {{ catway.catwayNumber }} -
         <strong>Type :</strong> {{ catway.type }} -
         <strong>État :</strong> {{ catway.catwayState }}
@@ -19,6 +23,9 @@ import { useUserStore } from '@/stores/user';
 import api from '@/config/api';
 
 const catways = ref([]);
+const error = ref('');
+const loading = ref(true);
+
 const userStore = useUserStore();
 const headers = { Authorization: `Bearer ${userStore.token}` };
 
@@ -27,7 +34,9 @@ onMounted(async () => {
     const res = await api.get('/catways', { headers });
     catways.value = res.data;
   } catch (err) {
-    console.error('❌ Erreur chargement catways :', err);
+    error.value = err.response?.data?.error || 'Erreur lors du chargement.';
+  } finally {
+    loading.value = false;
   }
 });
 </script>
@@ -46,5 +55,9 @@ li {
   padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+.error {
+  color: red;
+  font-weight: bold;
 }
 </style>
