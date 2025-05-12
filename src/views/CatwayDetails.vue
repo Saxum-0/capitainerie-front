@@ -1,15 +1,15 @@
 <template>
-  <div class="catway-details">
-    <h1>Détails du catway</h1>
+  <div>
+    <p v-if="loading">Chargement en cours...</p>
+    <p v-if="error" style="color:red">Erreur : {{ error }}</p>
 
-    <p v-if="loading">Chargement...</p>
-    <p v-else-if="error" class="error">{{ error }}</p>
-    <div v-else-if="catway">
+    <div class="catway-details" v-if="catway">
+      <h1>Détails du catway</h1>
+      <p><strong>ID :</strong> {{ catway._id }}</p>
       <p><strong>Numéro :</strong> {{ catway.catwayNumber }}</p>
       <p><strong>Type :</strong> {{ catway.type }}</p>
       <p><strong>État :</strong> {{ catway.catwayState }}</p>
     </div>
-    <p v-else>Aucune donnée trouvée.</p>
   </div>
 </template>
 
@@ -19,20 +19,24 @@ import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import api from '@/config/api';
 
-const route = useRoute();
 const catway = ref(null);
-const loading = ref(true);
 const error = ref('');
+const loading = ref(true);
+const route = useRoute();
 const userStore = useUserStore();
+
 const headers = { Authorization: `Bearer ${userStore.token}` };
 
 onMounted(async () => {
+  console.log('🧭 Mounting CatwayDetails with ID:', route.params.id);
+
   try {
-    const { data } = await api.get(`/catways/${route.params.id}`, { headers });
-    catway.value = data;
+    const res = await api.get(`/catways/${route.params.id}`, { headers });
+    console.log('✅ Réponse API catway:', res.data);
+    catway.value = res.data;
   } catch (err) {
-    console.error('❌ Erreur chargement catway :', err);
-    error.value = 'Impossible de charger les détails du catway.';
+    console.error('❌ Erreur API catway:', err);
+    error.value = err.response?.data?.error || err.message;
   } finally {
     loading.value = false;
   }
@@ -46,9 +50,5 @@ onMounted(async () => {
   padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
-}
-.error {
-  color: red;
-  font-weight: bold;
 }
 </style>
