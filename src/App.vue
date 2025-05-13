@@ -16,13 +16,3 @@ body {
   color: #333;
 }
 </style>
-<template>
-  <div id="app">
-    <ToastTest />
-    <router-view />
-  </div>
-</template>
-
-<script setup>
-import ToastTest from '@/components/ToastTest.vue';
-</script>
