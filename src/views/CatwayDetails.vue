@@ -1,11 +1,11 @@
 <template>
-  <div class="catway-details" v-if="catway?.value?._id">
+  <div class="catway-details" v-if="catway && catway._id">
     <h1>Détails du catway</h1>
-    <p><strong>ID :</strong> {{ catway.value._id }}</p>
-    <p><strong>Numéro :</strong> {{ catway.value.catwayNumber }}</p>
-    <p><strong>Type :</strong> {{ catway.value.type }}</p>
-    <p><strong>État :</strong> {{ catway.value.catwayState }}</p>
-    <p><strong>Créé le :</strong> {{ formatDate(catway.value.createdAt) }}</p>
+    <p><strong>ID :</strong> {{ catway._id }}</p>
+    <p><strong>Numéro :</strong> {{ catway.catwayNumber }}</p>
+    <p><strong>Type :</strong> {{ catway.type }}</p>
+    <p><strong>État :</strong> {{ catway.catwayState }}</p>
+    <p><strong>Créé le :</strong> {{ formatDate(catway.createdAt) }}</p>
   </div>
   <p v-else>Chargement du catway ou introuvable...</p>
 </template>
