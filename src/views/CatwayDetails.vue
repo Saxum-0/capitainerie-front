@@ -1,23 +1,18 @@
 <template>
-  <div class="catways">
-    <h1>Liste des catways</h1>
-
-    <div v-if="loading">Chargement des catways...</div>
-    <div v-else-if="error" class="error">{{ error }}</div>
-    <div v-else-if="catways.length === 0">Aucun catway disponible.</div>
-
-    <ul v-else>
-      <li v-for="catway in catways" :key="catway._id">
-        <strong>ID :</strong> {{ catway._id }}<br />
-        <strong>Numéro :</strong> {{ catway.catwayNumber }} -
-        <strong>Type :</strong> {{ catway.type }} -
-        <strong>État :</strong> {{ catway.catwayState }}
-        <br />
-        <router-link :to="`/catway/${catway._id}`">Détails</router-link>
-      </li>
-    </ul>
+  <div class="catway-details" v-if="catway && catway._id">
+    <h1>Détails du catway</h1>
+    <p><strong>ID :</strong> {{ catway._id }}</p>
+    <p><strong>Numéro :</strong> {{ catway.catwayNumber }}</p>
+    <p><strong>Type :</strong> {{ catway.type }}</p>
+    <p><strong>État :</strong> {{ catway.catwayState }}</p>
+    <p><strong>Créé le :</strong> {{ formatDate(catway.createdAt) }}</p>
+    <button @click="goBack">← Retour</button>
   </div>
+
+  <p v-else-if="catway === false">Catway introuvable.</p>
+  <p v-else>Chargement du catway...</p>
 </template>
+
 
 <script setup>
 import { onMounted, ref } from 'vue';
