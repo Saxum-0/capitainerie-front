@@ -1,29 +1,31 @@
 <template>
-    <form @submit.prevent="handleLogin" class="login-form">
-      <div>
-        <label>Email :</label>
-        <input v-model="email" type="email" required />
-      </div>
-      <div>
-        <label>Mot de passe :</label>
-        <input v-model="password" type="password" required />
-      </div>
-      <button type="submit">Se connecter</button>
-      <p v-if="error" class="error">{{ error }}</p>
-    </form>
-  </template>
-  
-  <script setup>
+  <form @submit.prevent="handleLogin" class="login-form">
+    <div>
+      <label>Email :</label>
+      <input v-model="email" type="email" required />
+    </div>
+    <div>
+      <label>Mot de passe :</label>
+      <input v-model="password" type="password" required />
+    </div>
+    <button type="submit">Se connecter</button>
+    <p v-if="error" class="error">{{ error }}</p>
+  </form>
+</template>
+
+<script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import api from '@/config/api';
+import { useToast } from 'vue-toastification'; // 🧁 import du toast
 
 const email = ref('');
 const password = ref('');
 const error = ref('');
 const router = useRouter();
 const userStore = useUserStore();
+const toast = useToast(); // 🧁 instance du toast
 
 const handleLogin = async () => {
   error.value = '';
@@ -38,25 +40,26 @@ const handleLogin = async () => {
     });
 
     userStore.setUser(response.data);
+    toast.success('✅ Connexion réussie !');
     router.push('/dashboard');
   } catch (err) {
     console.error("❌ ERREUR API :", err);
-    error.value = err.response?.data?.error || 'Erreur lors de la connexion';
+    const msg = err.response?.data?.error || 'Erreur lors de la connexion';
+    error.value = msg;
+    toast.error(`❌ ${msg}`);
   }
 };
 </script>
 
-  
-  <style scoped>
-  .login-form {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .error {
-    color: red;
-    margin-top: 0.5rem;
-  }
-  </style>
-  
+<style scoped>
+.login-form {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.error {
+  color: red;
+  margin-top: 0.5rem;
+}
+</style>
