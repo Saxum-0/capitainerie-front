@@ -58,6 +58,8 @@
         <input v-model="catwayForm.id" placeholder="ID catway" required />
         <button>Supprimer</button>
       </form>
+      
+      <p>Test affichage : {{ getCatwayDetails }}</p>
 
       <form @submit.prevent="getCatwayDetails">
   <input v-model="catwayForm.id" placeholder="ID catway" required />
