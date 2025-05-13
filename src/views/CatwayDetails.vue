@@ -13,51 +13,54 @@
   <p v-else>Chargement du catway...</p>
 </template>
 
-
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import api from '@/config/api';
 
-const catways = ref([]);
-const loading = ref(true);
-const error = ref('');
-
+const route = useRoute();
+const router = useRouter();
+const catway = ref(null);
 const userStore = useUserStore();
 const headers = { Authorization: `Bearer ${userStore.token}` };
 
+const formatDate = (dateStr) => new Date(dateStr).toLocaleString('fr-FR');
+
+const goBack = () => {
+  router.push('/dashboard');
+};
+
 onMounted(async () => {
   try {
-    const res = await api.get('/catways', { headers });
-    catways.value = Array.isArray(res.data) ? res.data : [];
+    const res = await api.get(`/catways/${route.params.id}`, { headers });
+    catway.value = res.data;
+    console.log("✅ Catway chargé :", catway.value);
   } catch (err) {
-    console.error('❌ Erreur chargement catways :', err);
-    error.value = 'Erreur lors du chargement des catways.';
-  } finally {
-    loading.value = false;
+    console.error('❌ Erreur chargement catway :', err);
+    catway.value = false;
   }
 });
 </script>
 
 <style scoped>
-.catways {
-  max-width: 700px;
-  margin: 0 auto;
-}
-ul {
-  list-style: none;
-  padding: 0;
-}
-li {
-  margin: 1rem 0;
+.catway-details {
+  max-width: 600px;
+  margin: 2rem auto;
   padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-.error {
-  color: red;
-  font-weight: bold;
-  margin: 1rem 0;
+button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #284c3d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #3a6a54;
 }
 </style>
-
