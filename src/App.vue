@@ -1,6 +1,5 @@
 <template>
   <Navbar />
-  <Toastest />
   <router-view />
 </template>
 
