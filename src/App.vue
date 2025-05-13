@@ -5,17 +5,6 @@
 
 <script setup>
 import Navbar from '@/components/Navbar.vue';
-import { onMounted } from 'vue';
-import { useToast } from 'vue-toastification';
-
-const toast = useToast();
-
-onMounted(() => {
-  toast.info('✅ App.vue est bien monté !');
-});
-
-
-
 </script>
 
 <style>
