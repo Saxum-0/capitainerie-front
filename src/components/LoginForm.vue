@@ -1,12 +1,12 @@
 <template>
   <form @submit.prevent="handleLogin" class="login-form">
     <div>
-      <label>Email :</label>
-      <input v-model="email" type="email" required />
+      <label for="email">Email :</label>
+      <input id="email" v-model="email" type="email" required />
     </div>
     <div>
-      <label>Mot de passe :</label>
-      <input v-model="password" type="password" required />
+      <label for="password">Mot de passe :</label>
+      <input id="password" v-model="password" type="password" required />
     </div>
     <button type="submit">Se connecter</button>
     <p v-if="error" class="error">{{ error }}</p>
@@ -16,34 +16,30 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useToast } from 'vue-toastification';
 import { useUserStore } from '@/stores/user';
 import api from '@/config/api';
-import { useToast } from 'vue-toastification'; // 🧁 import du toast
 
 const email = ref('');
 const password = ref('');
 const error = ref('');
 const router = useRouter();
+const toast = useToast();
 const userStore = useUserStore();
-const toast = useToast(); // 🧁 instance du toast
 
 const handleLogin = async () => {
   error.value = '';
 
-  console.log("🔗 API =", import.meta.env.VITE_API_URL);
-  console.log("📤 Données envoyées :", { email: email.value, password: password.value });
-
   try {
-    const response = await api.post('/login', {
+    const { data } = await api.post('/login', {
       email: email.value,
-      password: password.value
+      password: password.value,
     });
 
-    userStore.setUser(response.data);
+    userStore.setUser(data);
     toast.success('✅ Connexion réussie !');
     router.push('/dashboard');
   } catch (err) {
-    console.error("❌ ERREUR API :", err);
     const msg = err.response?.data?.error || 'Erreur lors de la connexion';
     error.value = msg;
     toast.error(`❌ ${msg}`);
@@ -63,3 +59,4 @@ const handleLogin = async () => {
   margin-top: 0.5rem;
 }
 </style>
+
