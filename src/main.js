@@ -5,7 +5,7 @@ import { createPinia } from 'pinia';
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 
-const app = createApp(App); // ✅ crée l'app d'abord
+const app = createApp(App); // 👈 on crée l'app EN PREMIER
 
 app.use(createPinia());
 app.use(router);
