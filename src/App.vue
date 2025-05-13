@@ -5,7 +5,6 @@
 
 <script setup>
 import Navbar from '@/components/Navbar.vue';
-import Toastest from './components/toastest.vue';
 import { onMounted } from 'vue';
 import { useToast } from 'vue-toastification';
 
