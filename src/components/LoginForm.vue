@@ -71,6 +71,7 @@ const handleLogin = async () => {
 button[disabled] {
   background-color: #ccc;
   cursor: wait;
+  width: 30%;
 }
 
 .spinner {
