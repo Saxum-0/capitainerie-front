@@ -105,7 +105,7 @@ const reservationForm = reactive({ id: '', catwayNumber: '', clientName: '', boa
 const resetForm = (form) => Object.keys(form).forEach(key => form[key] = '');
 
 const logout = () => {
-  userStore.clearUser();
+  userStore.logout();
   router.push('/');
   toast.info('Vous avez été déconnecté.');
 };
